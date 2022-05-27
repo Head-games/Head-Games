@@ -1,12 +1,42 @@
-// SPDX-License-Identifier: UNLICENSED
-// File: @uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol
+/**
+ *Submitted for verification at snowtrace.io on 2022-05-02
+*/
+
+// SPDX-License-Identifier: MIT
+pragma solidity >0.6.12;
+pragma experimental ABIEncoderV2;
+
+interface IJoeFactory {
+    event PairCreated(address indexed token0, address indexed token1, address pair, uint256);
+
+    function feeTo() external view returns (address);
+
+    function feeToSetter() external view returns (address);
+
+    function migrator() external view returns (address);
+
+    function getPair(address tokenA, address tokenB) external view returns (address pair);
+
+    function allPairs(uint256) external view returns (address pair);
+
+    function allPairsLength() external view returns (uint256);
+
+    function createPair(address tokenA, address tokenB) external returns (address pair);
+
+    function setFeeTo(address) external;
+
+    function setFeeToSetter(address) external;
+
+    function setMigrator(address) external;
+}
+
 
 pragma solidity >=0.6.2;
 
-interface IUniswapV2Router01 {
+interface IJoeRouter01 {
     function factory() external pure returns (address);
 
-    function WETH() external pure returns (address);
+    function WAVAX() external pure returns (address);
 
     function addLiquidity(
         address tokenA,
@@ -25,11 +55,11 @@ interface IUniswapV2Router01 {
             uint256 liquidity
         );
 
-    function addLiquidityETH(
+    function addLiquidityAVAX(
         address token,
         uint256 amountTokenDesired,
         uint256 amountTokenMin,
-        uint256 amountETHMin,
+        uint256 amountAVAXMin,
         address to,
         uint256 deadline
     )
@@ -37,7 +67,7 @@ interface IUniswapV2Router01 {
         payable
         returns (
             uint256 amountToken,
-            uint256 amountETH,
+            uint256 amountAVAX,
             uint256 liquidity
         );
 
@@ -51,14 +81,14 @@ interface IUniswapV2Router01 {
         uint256 deadline
     ) external returns (uint256 amountA, uint256 amountB);
 
-    function removeLiquidityETH(
+    function removeLiquidityAVAX(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountETHMin,
+        uint256 amountAVAXMin,
         address to,
         uint256 deadline
-    ) external returns (uint256 amountToken, uint256 amountETH);
+    ) external returns (uint256 amountToken, uint256 amountAVAX);
 
     function removeLiquidityWithPermit(
         address tokenA,
@@ -74,18 +104,18 @@ interface IUniswapV2Router01 {
         bytes32 s
     ) external returns (uint256 amountA, uint256 amountB);
 
-    function removeLiquidityETHWithPermit(
+    function removeLiquidityAVAXWithPermit(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountETHMin,
+        uint256 amountAVAXMin,
         address to,
         uint256 deadline,
         bool approveMax,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external returns (uint256 amountToken, uint256 amountETH);
+    ) external returns (uint256 amountToken, uint256 amountAVAX);
 
     function swapExactTokensForTokens(
         uint256 amountIn,
@@ -103,14 +133,14 @@ interface IUniswapV2Router01 {
         uint256 deadline
     ) external returns (uint256[] memory amounts);
 
-    function swapExactETHForTokens(
+    function swapExactAVAXForTokens(
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external payable returns (uint256[] memory amounts);
 
-    function swapTokensForExactETH(
+    function swapTokensForExactAVAX(
         uint256 amountOut,
         uint256 amountInMax,
         address[] calldata path,
@@ -118,7 +148,7 @@ interface IUniswapV2Router01 {
         uint256 deadline
     ) external returns (uint256[] memory amounts);
 
-    function swapExactTokensForETH(
+    function swapExactTokensForAVAX(
         uint256 amountIn,
         uint256 amountOutMin,
         address[] calldata path,
@@ -126,7 +156,7 @@ interface IUniswapV2Router01 {
         uint256 deadline
     ) external returns (uint256[] memory amounts);
 
-    function swapETHForExactTokens(
+    function swapAVAXForExactTokens(
         uint256 amountOut,
         address[] calldata path,
         address to,
@@ -151,43 +181,37 @@ interface IUniswapV2Router01 {
         uint256 reserveOut
     ) external pure returns (uint256 amountIn);
 
-    function getAmountsOut(uint256 amountIn, address[] calldata path)
-        external
-        view
-        returns (uint256[] memory amounts);
+    function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts);
 
-    function getAmountsIn(uint256 amountOut, address[] calldata path)
-        external
-        view
-        returns (uint256[] memory amounts);
+    function getAmountsIn(uint256 amountOut, address[] calldata path) external view returns (uint256[] memory amounts);
 }
 
-// File: @uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol
 
 pragma solidity >=0.6.2;
 
-interface IUniswapV2Router02 is IUniswapV2Router01 {
-    function removeLiquidityETHSupportingFeeOnTransferTokens(
+
+interface IJoeRouter02 is IJoeRouter01 {
+    function removeLiquidityAVAXSupportingFeeOnTransferTokens(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountETHMin,
+        uint256 amountAVAXMin,
         address to,
         uint256 deadline
-    ) external returns (uint256 amountETH);
+    ) external returns (uint256 amountAVAX);
 
-    function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
+    function removeLiquidityAVAXWithPermitSupportingFeeOnTransferTokens(
         address token,
         uint256 liquidity,
         uint256 amountTokenMin,
-        uint256 amountETHMin,
+        uint256 amountAVAXMin,
         address to,
         uint256 deadline,
         bool approveMax,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external returns (uint256 amountETH);
+    ) external returns (uint256 amountAVAX);
 
     function swapExactTokensForTokensSupportingFeeOnTransferTokens(
         uint256 amountIn,
@@ -197,14 +221,14 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
         uint256 deadline
     ) external;
 
-    function swapExactETHForTokensSupportingFeeOnTransferTokens(
+    function swapExactAVAXForTokensSupportingFeeOnTransferTokens(
         uint256 amountOutMin,
         address[] calldata path,
         address to,
         uint256 deadline
     ) external payable;
 
-    function swapExactTokensForETHSupportingFeeOnTransferTokens(
+    function swapExactTokensForAVAXSupportingFeeOnTransferTokens(
         uint256 amountIn,
         uint256 amountOutMin,
         address[] calldata path,
@@ -213,41 +237,7 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
     ) external;
 }
 
-// File: @uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol
-
-pragma solidity >=0.5.0;
-
-interface IUniswapV2Factory {
-    event PairCreated(
-        address indexed token0,
-        address indexed token1,
-        address pair,
-        uint256
-    );
-
-    function feeTo() external view returns (address);
-
-    function feeToSetter() external view returns (address);
-
-    function getPair(address tokenA, address tokenB)
-        external
-        view
-        returns (address pair);
-
-    function allPairs(uint256) external view returns (address pair);
-
-    function allPairsLength() external view returns (uint256);
-
-    function createPair(address tokenA, address tokenB)
-        external
-        returns (address pair);
-
-    function setFeeTo(address) external;
-
-    function setFeeToSetter(address) external;
-}
-
-// File: @openzeppelin/contracts/utils/Context.sol
+// File: @headgames/contracts/utils/Context.sol
 
 pragma solidity ^0.8.0;
 
@@ -271,7 +261,7 @@ abstract contract Context {
     }
 }
 
-// File: @openzeppelin/contracts/access/Ownable.sol
+// File: @oheadgames/contracts/access/Ownable.sol
 
 pragma solidity ^0.8.0;
 
@@ -347,9 +337,9 @@ abstract contract Ownable is Context {
     }
 }
 
-// File: @openzeppelin/contracts/utils/Address.sol
+// File: @headgames/contracts/utils/Address.sol
 
-// OpenZeppelin Contracts v4.4.0 (utils/Address.sol)
+// headgames Contracts v4.4.0 (utils/Address.sol)
 
 pragma solidity ^0.8.0;
 
@@ -557,7 +547,7 @@ library Address {
     }
 }
 
-// File: @openzeppelin/contracts/utils/math/SafeMath.sol
+// File: @headgames/contracts/utils/math/SafeMath.sol
 
 pragma solidity ^0.8.0;
 
@@ -618,7 +608,7 @@ library SafeMath {
         unchecked {
             // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
             // benefit is lost if 'b' is also tested.
-            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+            // See: https://github.com/headgames
             if (a == 0) return (true, 0);
             uint256 c = a * b;
             if (c / a != b) return (false, 0);
@@ -804,7 +794,7 @@ library SafeMath {
     }
 }
 
-// File: @openzeppelin/contracts/token/ERC20/IERC20.sol
+// File: @Headgames/contracts/token/ERC20/IERC20.sol
 
 pragma solidity ^0.8.0;
 
@@ -895,11 +885,11 @@ interface IERC20 {
     );
 }
 
-// File: HeadFootBall.sol
+// File: HeadGames.sol
 
 pragma solidity ^0.8.10;
 
-contract HeadFootBall is Context, IERC20, Ownable {
+contract HeadGames is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -917,27 +907,37 @@ contract HeadFootBall is Context, IERC20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string internal constant _name = "HeadFootBall";
+    string internal constant _name = "Head Games";
     string internal constant _symbol = "$HEAD";
-    uint8 internal constant _decimals = 9;
+    uint8 internal  constant _decimals = 9;
+    
+    struct BuyFee {
+        uint256 marketingFee;
+        uint256 taxFee;
+    }
 
-    uint256 public _taxFee = 2;
-    uint256 private _previousTaxFee = _taxFee;
+    struct SellFee {
+        uint256 marketingFee;
+        uint256 taxFee;
+    }
 
-    uint256 public _marketingFee = 4;
-    uint256 private _previousMarketingFee = _marketingFee;
+    BuyFee public buyFee;
+    SellFee public sellFee;
 
-    IUniswapV2Router02 public uniswapV2Router;
-    address public uniswapV2Pair;
+    uint256 private _taxFee;
+    uint256 private _marketingFee;
+
+    IJoeRouter02 public traderJoeV2Router;
+    address public traderjoePair;
 
     address payable public _marketingWallet =
-        payable(address(0xfD34A7043f60d81Fc69CE08C219c76fc1479D4E3)); //Replace Marketing Wallet 
+        payable(address(0x97741C0D34D8BfEA46aF4Cbbe3fbE6Bc6C1b27E8)); // Marketing Wallet 
 
     bool internal inSwapAndLiquify;
     bool public swapAndLiquifyEnabled = true;
 
     uint256 public _maxTxAmount = 1 * 10**7 * 10**9; // 1% Of the supply
-    uint256 private numTokensSellToGetBnb = 2 * 10**5 * 10**9; //200000 Tokens
+    uint256 public numTokensSellToGetAVAX = 2 * 10**4 * 10**9; //20000 Tokens
 
     event MinTokensBeforeSwapUpdated(uint256 minTokensBeforeSwap);
     event SwapAndLiquifyEnabledUpdated(bool enabled);
@@ -956,15 +956,21 @@ contract HeadFootBall is Context, IERC20, Ownable {
     constructor() {
         _rOwned[_msgSender()] = _rTotal;
 
-        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
-            0x10ED43C718714eb63d5aA57B78B54704E256024E
-        ); // pancakeswap router
-        // Create a uniswap pair for this new token
-        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
-            .createPair(address(this), _uniswapV2Router.WETH());
+        IJoeRouter02 _traderJoeV2Router = IJoeRouter02(
+            0x60aE616a2155Ee3d9A68541Ba4544862310933d4
+        ); // traderJoe router
+        // Create a traderJoe pair for this new token
+        traderjoePair = IJoeFactory(_traderJoeV2Router.factory())
+            .createPair(address(this), _traderJoeV2Router.WAVAX());
 
         // set the rest of the contract variables
-        uniswapV2Router = _uniswapV2Router;
+        traderJoeV2Router = _traderJoeV2Router;
+
+        buyFee.marketingFee = 4;
+        buyFee.taxFee= 2;
+
+        sellFee.marketingFee = 4;
+        buyFee.taxFee= 2;
 
         //exclude owner and this contract from fee
         _isExcludedFromFee[owner()] = true;
@@ -972,27 +978,27 @@ contract HeadFootBall is Context, IERC20, Ownable {
 
         //exclude owner and following address from Reward (reflections)
 
-        _isExcluded[address(0x123)] = true;
-        _isExcluded[address(0x456)] = true;
-        _isExcluded[address(0x789)] = true;
+        _isExcluded[address(0x8E28d308E191Ee05295E3E350662fAEc07492FCF)] = true;
+        _isExcluded[address(0x3cB942AE34367D7512a32dF40c927C332aa9FeA5)] = true;
+        _isExcluded[address(0x000000000000000000000000000000000000dEaD)] = true;
 
         emit Transfer(address(0), _msgSender(), _tTotal);
-        _approve(address(this), address(uniswapV2Router), MAX);
+        _approve(address(this), address(traderJoeV2Router), MAX);
     }
 
-    function name() public view returns (string memory) {
+    function name() public pure returns (string memory) {
         return _name;
     }
 
-    function symbol() public view returns (string memory) {
+    function symbol() public pure returns (string memory) {
         return _symbol;
     }
 
-    function decimals() public view returns (uint8) {
+    function decimals() public pure returns (uint8) {
         return _decimals;
     }
 
-    function totalSupply() public view override returns (uint256) {
+    function totalSupply() public pure override returns (uint256) {
         return _tTotal;
     }
 
@@ -1152,35 +1158,41 @@ contract HeadFootBall is Context, IERC20, Ownable {
         _isExcludedFromFee[account] = false;
     }
 
-    function setTaxFeePercent(uint256 taxFee) external onlyOwner {
-        require(taxFee <= 10, "max reflection fee limit is 10 percent");
-        _taxFee = taxFee;
+    function setSellFeePercent(uint256 marketing, uint256 tax) external onlyOwner {
+        require(marketing <= 15, "max marketing fee limit is 15 percent");
+        require(tax <= 10, "max reflection fee limit is 10 percent");
+        sellFee.marketingFee = marketing;
+        sellFee.taxFee = tax;
     }
 
-    function setMarketingFeePercent(uint256 marketingFee) external onlyOwner {
-        require(marketingFee <= 15, "max marketing fee limit is 15 percent");
-        _marketingFee = marketingFee;
+    function setBuyFeePercent(uint256 marketing, uint256 tax) external onlyOwner {
+        require(marketing <= 15, "max marketing fee limit is 15 percent");
+        require(tax <= 10, "max reflection fee limit is 10 percent");
+
+        buyFee.marketingFee = marketing;
+        buyFee.taxFee = tax;
     }
 
-    function setMinNumTokensSellToGetBnb(uint256 numTokens) external onlyOwner {
-        numTokensSellToGetBnb = numTokens * 10**9;
+    function setMinNumTokensSellToGetAVAX(uint256 numTokens) external onlyOwner {
+        numTokensSellToGetAVAX = numTokens * 10**9;
+        require(numTokensSellToGetAVAX >= 2 * 10**4 * 10**9,"Min Tokens to sell should be greater or equal than numTokensSellToGetAVAX");
     }
 
     function updateRouter(address newAddress) external onlyOwner {
         require(
-            newAddress != address(uniswapV2Router),
+            newAddress != address(traderJoeV2Router),
             "TOKEN: The router already has that address"
         );
-        uniswapV2Router = IUniswapV2Router02(newAddress);
-        address get_pair = IUniswapV2Factory(uniswapV2Router.factory()).getPair(
+        traderJoeV2Router = IJoeRouter02(newAddress);
+        address get_pair = IJoeFactory(traderJoeV2Router.factory()).getPair(
             address(this),
-            uniswapV2Router.WETH()
+            traderJoeV2Router.WAVAX()
         );
         if (get_pair == address(0)) {
-            uniswapV2Pair = IUniswapV2Factory(uniswapV2Router.factory())
-                .createPair(address(this), uniswapV2Router.WETH());
+            traderjoePair = IJoeFactory(traderJoeV2Router.factory())
+                .createPair(address(this), traderJoeV2Router.WAVAX());
         } else {
-            uniswapV2Pair = get_pair;
+            traderjoePair = get_pair;
         }
     }
 
@@ -1219,7 +1231,7 @@ contract HeadFootBall is Context, IERC20, Ownable {
         erc20token.transfer(owner(), balance);
     }
 
-    //to recieve ETH from uniswapV2Router when swaping
+    //to recieve ETH from traderJoeV2Router when swaping
     receive() external payable {}
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
@@ -1332,18 +1344,18 @@ contract HeadFootBall is Context, IERC20, Ownable {
     }
 
     function removeAllFee() private {
-        if (_taxFee == 0 && _marketingFee == 0) return;
-
-        _previousTaxFee = _taxFee;
-        _previousMarketingFee = _marketingFee;
-
-        _taxFee = 0;
+               _taxFee = 0;
         _marketingFee = 0;
     }
 
-    function restoreAllFee() private {
-        _taxFee = _previousTaxFee;
-        _marketingFee = _previousMarketingFee;
+    function setBuy() private {
+        _taxFee = buyFee.taxFee;
+        _marketingFee = buyFee.marketingFee;
+    }
+
+    function setSell() private {
+        _taxFee = sellFee.taxFee;
+        _marketingFee = sellFee.marketingFee;
     }
 
     function isExcludedFromFee(address account) public view returns (bool) {
@@ -1380,7 +1392,7 @@ contract HeadFootBall is Context, IERC20, Ownable {
         // is the token balance of this contract address over the min number of
         // tokens that we need to initiate a swap + liquidity lock?
         // also, don't get caught in a circular liquidity event.
-        // also, don't swap & liquify if sender is uniswap pair.
+        // also, don't swap & liquify if sender is traderJoe pair.
         uint256 contractTokenBalance = balanceOf(address(this));
 
         if (contractTokenBalance >= _maxTxAmount) {
@@ -1388,16 +1400,16 @@ contract HeadFootBall is Context, IERC20, Ownable {
         }
 
         bool overMinTokenBalance = contractTokenBalance >=
-            numTokensSellToGetBnb;
+            numTokensSellToGetAVAX;
         if (
             overMinTokenBalance &&
             !inSwapAndLiquify &&
-            from != uniswapV2Pair &&
+            from != traderjoePair &&
             swapAndLiquifyEnabled
         ) {
-            contractTokenBalance = numTokensSellToGetBnb;
+            contractTokenBalance = numTokensSellToGetAVAX;
 
-            swapTokensForEth(contractTokenBalance);
+            swapTokensForAvax(contractTokenBalance);
         }
 
         //indicates if fee should be deducted from transfer
@@ -1412,18 +1424,18 @@ contract HeadFootBall is Context, IERC20, Ownable {
         _tokenTransfer(from, to, amount, takeFee);
     }
 
-    function swapTokensForEth(uint256 tokenAmount) private lockTheSwap {
-        // generate the uniswap pair path of token -> weth
+    function swapTokensForAvax(uint256 tokenAmount) private lockTheSwap {
+        // generate the traderJoe pair path of token -> wavax
         address[] memory path = new address[](2);
         path[0] = address(this);
-        path[1] = uniswapV2Router.WETH();
+        path[1] = traderJoeV2Router.WAVAX();
 
-        _approve(address(this), address(uniswapV2Router), tokenAmount);
+        _approve(address(this), address(traderJoeV2Router), tokenAmount);
 
         uint256 initialBalance = address(this).balance;
 
         // make the swap
-        uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+        traderJoeV2Router.swapExactTokensForAVAXSupportingFeeOnTransferTokens(
             tokenAmount,
             0, // accept any amount of ETH
             path,
@@ -1443,8 +1455,15 @@ contract HeadFootBall is Context, IERC20, Ownable {
         uint256 amount,
         bool takeFee
     ) private {
-        if (!takeFee) removeAllFee();
-
+         removeAllFee();
+         if (takeFee) {
+            if (sender == traderjoePair) {
+                setBuy();
+            }
+            if (recipient == traderjoePair) {
+                setSell();
+            }
+        }
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
             _transferFromExcluded(sender, recipient, amount);
         } else if (!_isExcluded[sender] && _isExcluded[recipient]) {
@@ -1455,7 +1474,7 @@ contract HeadFootBall is Context, IERC20, Ownable {
             _transferStandard(sender, recipient, amount);
         }
 
-        if (!takeFee) restoreAllFee();
+       
     }
 
     function _transferStandard(
